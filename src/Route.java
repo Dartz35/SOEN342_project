@@ -47,6 +47,7 @@ public final class Route {
     //     return Duration.ofSeconds(diff);
     // }
 
+    // Getters for all immutable fields
     public String getId() { return id; }
     public String getFrom() { return from; }
     public String getTo() { return to; }
@@ -54,33 +55,49 @@ public final class Route {
     public LocalTime getArrivalTime() { return arrivalTime; }
     public Duration getScheduledDuration() { return scheduledDuration; }
     public double getFirstRate() { return firstRate; }
-
     public double getSecondRate() { return secondRate; }
+    public List<String> getDaysOfOp() { return daysOfOp; }
+    public String getTrainType() { return trainType; }
 
-    public List<String> getDaysOfOp() {return daysOfOp;}
-
-    public String getTrainType() {return trainType;}
-
-
-    @Override public String toString() {
-        return "Route{" + id + " " + from + "→" + to + " dep=" + departureTime + " arr=" + arrivalTime +
-                " dur=" + scheduledDuration.toMinutes() + "first rate =" + firstRate + "second rate ="+secondRate+" }";
+    /**
+     * Returns a formatted string describing the route,
+     * including stations, times, duration, and rates.
+     */
+    @Override 
+    public String toString() {
+        return "Route{" + id + " " + from + "→" + to + 
+               " dep=" + departureTime + 
+               " arr=" + arrivalTime +
+               " dur=" + scheduledDuration.toMinutes() + 
+               " first rate=" + firstRate + 
+               " second rate=" + secondRate + " }";
     }
 
-    @Override public boolean equals(Object o) {
+    /**
+     * Compares this Route with another for equality.
+     * Two routes are considered equal if their IDs, stations,
+     * times, and rates match exactly.
+     */
+    @Override 
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Route)) return false;
         Route route = (Route) o;
         return Double.compare(route.firstRate, firstRate) == 0 &&
-                Double.compare(route.secondRate, secondRate) == 0 &&
-                id.equals(route.id) &&
-                from.equals(route.from) &&
-                to.equals(route.to) &&
-                departureTime.equals(route.departureTime) &&
-                arrivalTime.equals(route.arrivalTime);
+               Double.compare(route.secondRate, secondRate) == 0 &&
+               id.equals(route.id) &&
+               from.equals(route.from) &&
+               to.equals(route.to) &&
+               departureTime.equals(route.departureTime) &&
+               arrivalTime.equals(route.arrivalTime);
     }
 
-    @Override public int hashCode() {
-        return Objects.hash(id, from, to, departureTime, arrivalTime, firstRate,secondRate);
+    /**
+     * Generates a hash code consistent with equals(),
+     * allowing Route objects to be used safely in hash-based collections.
+     */
+    @Override 
+    public int hashCode() {
+        return Objects.hash(id, from, to, departureTime, arrivalTime, firstRate, secondRate);
     }
 }
