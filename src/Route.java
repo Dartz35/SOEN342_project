@@ -39,13 +39,13 @@ public final class Route {
     }
 
     
-    private static Duration computeDuration(LocalTime dep, LocalTime arr) {
-        long depSec = dep.toSecondOfDay();
-        long arrSec = arr.toSecondOfDay();
-        long diff = arrSec - depSec;
-        if (diff < 0) diff += 24 * 3600L; // overnight
-        return Duration.ofSeconds(diff);
-    }
+    // private static Duration computeDuration(LocalTime dep, LocalTime arr) {
+    //     long depSec = dep.toSecondOfDay();
+    //     long arrSec = arr.toSecondOfDay();
+    //     long diff = arrSec - depSec;
+    //     if (diff < 0) diff += 24 * 3600L; // overnight
+    //     return Duration.ofSeconds(diff);
+    // }
 
     public String getId() { return id; }
     public String getFrom() { return from; }
