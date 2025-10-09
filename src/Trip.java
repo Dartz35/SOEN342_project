@@ -30,5 +30,92 @@ public abstract class Trip {
         this.to = this.legs.get(legs.size() - 1).getTo();
         this.departureTime = this.legs.get(0).getDepartureTime();
         this.arrivalTime = this.legs.get(legs.size() - 1).getArrivalTime();
+        this.timeToChangeConnection = getTotalTransferTime();
+        this.totalDuration = getTotalTravelTime();
+        this.totalFirstRate = getTotalFirstRate();
+        this.totalSecondRate = getTotalSecondRate();
+        this.daysOfOp = getAllDaysOfOp();
+        this.trainTypes = getAllTrainTypes();
+
+
+        if (!isChained()) throw new IllegalArgumentException("Legs must chain from->to");
+    }
+
+    public String getId() { return id; }
+    public List<Route> getLegs() { return legs; }
+
+    public String getOrigin() { return this.from; }
+    public String getDestination() { return this.to; }
+
+    public List<String> getTrainType(){return this.trainTypes;}
+    public int getConnectionsCount() { return legs.size() - 1; }
+    public LocalTime getFirstDepartureTime() { return departureTime; }
+    public LocalTime getFinalArrivalTime()   { return arrivalTime; }
+
+    public List<String> getDaysOfOp(){return this.daysOfOp;}
+
+    public Duration getTotalInTrainTime() {
+        Duration sum = Duration.ZERO;
+        for (Route r : legs) sum = sum.plus(r.getScheduledDuration());
+        return sum;
+    }
+
+    public Duration getTotalTransferTime() {
+        if (legs.size() <= 1) return Duration.ZERO;
+        Duration total = Duration.ZERO;
+        for (int i = 0; i < legs.size() - 1; i++) {
+            long gap = legs.get(i + 1).getDepartureTime().toSecondOfDay()
+                    - legs.get(i).getArrivalTime().toSecondOfDay();
+            if (gap < 0) gap += 24 * 3600L;
+            total = total.plusSeconds(gap);
+        }
+        return total;
+    }
+
+    public Duration getTotalTravelTime() { return getTotalInTrainTime().plus(getTotalTransferTime()); }
+
+    public double getTotalFirstRate() {
+        double sum = 0;
+        for (Route r : legs) sum += r.getFirstRate();
+        return sum;
+    }
+
+    public double getTotalSecondRate() {
+        double sum = 0;
+        for (Route r : legs) sum += r.getSecondRate();
+        return sum;
+    }
+
+    public List<String> getAllTrainTypes() {
+
+        List<String> trainTypes = new ArrayList<>();
+        for (Route r : legs) trainTypes.add(r.getTrainType());
+
+        List<String> finalTrainTypes = new ArrayList<>(new LinkedHashSet<>(trainTypes));
+
+        return finalTrainTypes;
+    }
+
+    public List<String> getAllDaysOfOp() {
+        if (legs == null || legs.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        Set<String> common = new HashSet<>(legs.get(0).getDaysOfOp());
+
+        for (int i = 1; i < legs.size(); i++) {
+            common.retainAll(legs.get(i).getDaysOfOp());
+        }
+
+        List<String> result = new ArrayList<>(common);
+        Collections.sort(result, String.CASE_INSENSITIVE_ORDER);
+        return result;
+    }
+
+    private boolean isChained() {
+        for (int i = 0; i < legs.size() - 1; i++) {
+            if (!Objects.equals(legs.get(i).getTo(), legs.get(i + 1).getFrom())) return false;
+        }
+        return true;
     }
 }
