@@ -118,4 +118,46 @@ public abstract class Trip {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Trip{" +
+                "id='" + id + '\'' +
+                ", " + getOrigin() + "→" + getDestination() +
+                ", legs=" + legs.size() +
+                ", dep=" + getFirstDepartureTime() +
+                ", arr=" + getFinalArrivalTime() +
+                ", dur=" + getTotalTravelTime().toMinutes() + "min" +
+                ", changeTime=" + formatDuration(timeToChangeConnection) +
+                ", First Rate=" + getTotalFirstRate() + "€" +
+                ", Second Rate=" + getTotalSecondRate() + "€" +
+                ", TrainTypes=" + formatList(getTrainType()) +
+                ", DaysOfOp=" + formatList(getDaysOfOp()) +
+                '}';
+    }
+
+    private static String formatList(List<String> list) {
+        if (list == null || list.isEmpty()) return "[]";
+        return "[" + String.join(", ", list) + "]";
+    }
+
+    private static String formatDuration(java.time.Duration d) {
+        if (d == null || d.isZero()) return "0min";
+        long hours = d.toHours();
+        long minutes = d.toMinutesPart();
+        if (hours > 0)
+            return hours + "h " + minutes + "m";
+        else
+            return minutes + "min";
+    }
+
+
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Trip)) return false;
+        Trip trip = (Trip) o;
+        return id.equals(trip.id) && legs.equals(trip.legs);
+    }
+
+    @Override public int hashCode() { return Objects.hash(id, legs); }
 }
