@@ -87,8 +87,7 @@ public final class RouteCsvLoader {
                             if (!d.isBlank()) daysOfOp.add(d.trim());
                         }
                     }
-
-                    // Adjust this constructor to match your Route class
+                    //Construct the route objects
                     routes.add(new Route(
                             id,
                             from,
