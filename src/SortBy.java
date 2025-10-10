@@ -1,2 +1,14 @@
-public class SortBy {
+public enum SortBy {
+    DEPARTURE_TIME,
+    ARRIVAL_TIME,
+    ORIGIN_CITY,
+    DESTINATION_CITY,
+    DURATION,
+    FIRST_RATE,
+
+    SECOND_RATE,
+
+    DAY_OF_OP,
+
+    TRAIN_TYPE
 }
