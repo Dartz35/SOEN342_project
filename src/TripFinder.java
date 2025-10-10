@@ -1,4 +1,5 @@
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,6 +10,27 @@ public final class TripFinder {
                 .filter(r -> matches(r, crit))
                 .map(r -> new DirectTrip("D:" + r.getId(), r))
                 .collect(Collectors.toList());
+    }
+
+    public static List<Trip> findIndirectIfNoDirect(List<Route> routes, SearchCriteria crit) {
+        List<Trip> direct = findDirect(routes, crit);
+        if (!direct.isEmpty()) return direct;
+
+        List<Trip> indirect = new ArrayList<>();
+        for (Route a : routes) {
+            for (Route b : routes) {
+                if (!a.getTo().equals(b.getFrom())) continue;
+
+                long gap = b.getDepartureTime().toSecondOfDay() - a.getArrivalTime().toSecondOfDay();
+                if (gap < 0) gap += 24 * 3600L;
+                if (gap < 0) continue;
+
+                if (matches(a, crit) || matches(b, crit)) {
+                    indirect.add(new IndirectTrip("I:" + a.getId() + "+" + b.getId(), List.of(a, b)));
+                }
+            }
+        }
+        return indirect;
     }
 
 
