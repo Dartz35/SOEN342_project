@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.*;
 
 public class Main {
@@ -37,6 +38,8 @@ public class Main {
         String attr = in.nextLine().trim();
         System.out.print("Value: ");
         String val = in.nextLine().trim();
+
+        SearchCriteria crit = new SearchCriteria(attr, val, LocalDate.now());
 
         
 
