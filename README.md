@@ -6,7 +6,7 @@ Team Leader | Fourth-year Computer Engineering student with extensive experience
 - **Soukayna Haitami (40280964/[@Soukay55](https://github.com/Soukay55))** –
 - **Wissem Oumsalem(40291712/[@wisoums](https://github.com/wisoums))** -
 
-- # Train Trip Finder
+# Train Trip Finder
 
 A Java-based application for searching, loading, and sorting train trips from CSV route data.  
 It helps users find direct or indirect train journeys, calculate total travel times, and compare prices.
