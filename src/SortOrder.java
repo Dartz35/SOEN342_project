@@ -1,2 +1,1 @@
-public class SortOrder {
-}
+public enum SortOrder { ASC, DESC }
