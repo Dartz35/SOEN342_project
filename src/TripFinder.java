@@ -1,6 +1,15 @@
 import java.time.LocalTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public final class TripFinder {
+
+    public static List<Trip> findDirect(List<Route> routes, SearchCriteria crit) {
+        return routes.stream()
+                .filter(r -> matches(r, crit))
+                .map(r -> new DirectTrip("D:" + r.getId(), r))
+                .collect(Collectors.toList());
+    }
 
 
     private static boolean matches(Route r, SearchCriteria c) {
