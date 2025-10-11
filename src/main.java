@@ -70,3 +70,51 @@ public class Main {
 
     }
 }
+
+ private static void showTrips(List<Trip> trips) {
+        System.out.println("\nResults (" + trips.size() + "):");
+        int i = 1;
+        for (Trip t : trips) {
+            /*System.out.printf(Locale.ROOT,
+                    "%2d) %s → %s | legs=%d | dep=%s | arr=%s | dur=%dm | $%.2f%n | $%.2f%n",
+                    i++,
+                    t.getOrigin(), t.getDestination(), t.getLegs().size(),
+                    t.getFirstDepartureTime(), t.getFinalArrivalTime(),
+                    t.getTotalTravelTime().toMinutes(),
+                    t.getTotalFirstRate(),
+                    t.getTotalSecondRate());*/
+            System.out.println(t);
+        }
+    }
+
+    private static SortBy askSortKey() {
+        System.out.println("Sort by: ");
+        System.out.println(" 1) Departure time");
+        System.out.println(" 2) Arrival time");
+        System.out.println(" 3) Origin city (A→Z)");
+        System.out.println(" 4) Destination city (A→Z)");
+        System.out.println(" 5) Duration");
+        System.out.println(" 6) First Rate");
+        System.out.println(" 7) Second Rate");
+        System.out.print("Choose 1-7: ");
+        String s = in.nextLine().trim();
+        switch (s) {
+            case "1": return SortBy.DEPARTURE_TIME;
+            case "2": return SortBy.ARRIVAL_TIME;
+            case "3": return SortBy.ORIGIN_CITY;
+            case "4": return SortBy.DESTINATION_CITY;
+            case "5": return SortBy.DURATION;
+            case "6": return SortBy.FIRST_RATE;
+            case "7": return SortBy.SECOND_RATE;
+            default:
+                System.out.println("Unknown, defaulting to Arrival time.");
+                return SortBy.ARRIVAL_TIME;
+        }
+    }
+
+    private static SortOrder askSortOrder() {
+        System.out.print("Order [A]sc / [D]esc (default A): ");
+        String s = in.nextLine().trim().toUpperCase(Locale.ROOT);
+        return s.equals("D") ? SortOrder.DESC : SortOrder.ASC;
+    }
+}
