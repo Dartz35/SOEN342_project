@@ -48,7 +48,25 @@ public class Main {
             return;
         }
 
+        showTrips(trips);
+
         
+        while (true) {
+            System.out.println("\nOptions: Sort or Quit");
+            System.out.print("> ");
+            String choice = in.nextLine().trim().toUpperCase(Locale.ROOT);
+            if (choice.equalsIgnoreCase("Quit")) break;
+
+            if (choice.equalsIgnoreCase("Sort")) {
+                SortBy key = askSortKey();
+                SortOrder order = askSortOrder();
+                trips = TripSort.sort(trips, key, order);
+                showTrips(trips);
+            }
+        }
+
+        System.out.println("Goodbye!");
+    }
 
     }
 }
