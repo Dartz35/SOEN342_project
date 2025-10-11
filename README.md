@@ -1,12 +1,10 @@
 # SOEN342_project
 
 - **Ali Khalifa (40215063/[@Dartz35](https://github.com/Dartz35))** –  
-Team Leader | Fourth-year Computer Engineering student with extensive experience in **C/C++, HTML/CSS, JavaScript, Python, Java, and React**. Focused on developing efficient software solutions while adhering to Agile methodologies. Passionate about designing and improving software architecture to enhance performance.
-
 - **Soukayna Haitami (40280964/[@Soukay55](https://github.com/Soukay55))** –
 - **Wissem Oumsalem(40291712/[@wisoums](https://github.com/wisoums))** -
 
-# Train Trip Finder
+# Iteration 1: Train Trip Finder
 
 A Java-based application for searching, loading, and sorting train trips from CSV route data.  
 It helps users find direct or indirect train journeys, calculate total travel times, and compare prices.
@@ -43,3 +41,21 @@ It helps users find direct or indirect train journeys, calculate total travel ti
 | **Main** | Application entry point that ties all components together. |
 
 ---
+## How to Run
+
+1. Compile and run:
+
+   java Main
+
+2. Input one of the following attribute:
+ - from       
+ - to         
+ - departure  
+ - arrival    
+ - duration   
+ - First Rate      
+ - Second Rate      
+ - Train type
+ - Day of operation
+
+3.
