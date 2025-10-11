@@ -58,4 +58,29 @@ It helps users find direct or indirect train journeys, calculate total travel ti
  - Train type
  - Day of operation
 
-3.
+3. Let's you choose 'to'. You will then input a value. (Consult eu_rail_network.csv file)
+   Example: 'Aarhus'
+
+Results:
+Trip{id='D:R01613', Malmö?Aarhus, legs=1, dep=19:35, arr=04:50, dur=555min, changeTime=0min, First Rate=246.0?, Second Rate=134.0?, TrainTypes=[Nightjet], DaysOfOp=[Fri, Mon, Wed]}
+Trip{id='D:R01614', Malmö?Aarhus, legs=1, dep=15:35, arr=18:00, dur=145min, changeTime=0min, First Rate=79.0?, Second Rate=49.0?, TrainTypes=[Frecciarossa], DaysOfOp=[Daily]}
+
+5. Once you get the results, you will be prompted to either 'Sort' or 'Quit'. If you choose 'Sort', you will have the following choices:
+Sort by: 
+ 1) Departure time
+ 2) Arrival time
+ 3) Origin city (A?Z)
+ 4) Destination city (A?Z)
+ 5) Duration
+ 6) First Rate
+ 7) Second Rate
+Choose 1-7:
+
+6. Let's say you choose '2'. You will now be prompted to display in either ascending or descending order.
+   Order [A]sc / [D]esc (default A): 
+
+7. Let's suppose you choose 'A'.
+
+Results:
+Trip{id='D:R01613', Malmö?Aarhus, legs=1, dep=19:35, arr=04:50, dur=555min, changeTime=0min, First Rate=246.0?, Second Rate=134.0?, TrainTypes=[Nightjet], DaysOfOp=[Fri, Mon, Wed]}
+Trip{id='D:R01614', Malmö?Aarhus, legs=1, dep=15:35, arr=18:00, dur=145min, changeTime=0min, First Rate=79.0?, Second Rate=49.0?, TrainTypes=[Frecciarossa], DaysOfOp=[Daily]}
