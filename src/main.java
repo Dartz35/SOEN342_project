@@ -5,13 +5,12 @@ import java.util.*;
 public class Main {
 
     private static final String CSV_PATH = "eu_rail_network.csv";
+    private static final Scanner IN = new Scanner(System.in);
 
-    private static final Scanner in = new Scanner(System.in);
     public static void main(String[] args) {
 
         System.out.println("*********Trip Finder********");
         System.out.println("CSV path: " + CSV_PATH);
-
 
         List<Route> routes;
         try {
@@ -24,20 +23,20 @@ public class Main {
         System.out.println("Loaded " + routes.size() + " routes.");
 
         System.out.println("\nFilter by one attribute:");
-        System.out.println(" - from       (origin city)");
-        System.out.println(" - to         (destination city)");
-        System.out.println(" - departure  (HH:mm)");
-        System.out.println(" - arrival    (HH:mm)");
-        System.out.println(" - duration   (minutes)");
-        System.out.println(" - First Rate      (<= value)");
-        System.out.println(" - Second Rate      (<= value)");
+        System.out.println(" - from              (origin city)");
+        System.out.println(" - to                (destination city)");
+        System.out.println(" - departure         (HH:mm)");
+        System.out.println(" - arrival           (HH:mm)");
+        System.out.println(" - duration          (minutes)");
+        System.out.println(" - First Rate        (<= value)");
+        System.out.println(" - Second Rate       (<= value)");
         System.out.println(" - Train type");
-        System.out.println(" - Day of operation ");
+        System.out.println(" - Day of operation");
 
         System.out.print("Attribute: ");
-        String attr = in.nextLine().trim();
+        String attr = IN.nextLine().trim();
         System.out.print("Value: ");
-        String val = in.nextLine().trim();
+        String val = IN.nextLine().trim();
 
         SearchCriteria crit = new SearchCriteria(attr, val, LocalDate.now());
 
@@ -50,14 +49,13 @@ public class Main {
 
         showTrips(trips);
 
-        
         while (true) {
-            System.out.println("\nOptions: Sort or Quit");
+            System.out.println("\nOptions: [S]ort or [Q]uit");
             System.out.print("> ");
-            String choice = in.nextLine().trim().toUpperCase(Locale.ROOT);
-            if (choice.equalsIgnoreCase("Quit")) break;
+            String choice = IN.nextLine().trim();
+            if (choice.equalsIgnoreCase("Q") || choice.equalsIgnoreCase("Quit")) break;
 
-            if (choice.equalsIgnoreCase("Sort")) {
+            if (choice.equalsIgnoreCase("S") || choice.equalsIgnoreCase("Sort")) {
                 SortBy key = askSortKey();
                 SortOrder order = askSortOrder();
                 trips = TripSort.sort(trips, key, order);
@@ -68,22 +66,18 @@ public class Main {
         System.out.println("Goodbye!");
     }
 
-    }
-}
-
- private static void showTrips(List<Trip> trips) {
+    private static void showTrips(List<Trip> trips) {
         System.out.println("\nResults (" + trips.size() + "):");
         int i = 1;
         for (Trip t : trips) {
-            /*System.out.printf(Locale.ROOT,
-                    "%2d) %s → %s | legs=%d | dep=%s | arr=%s | dur=%dm | $%.2f%n | $%.2f%n",
-                    i++,
-                    t.getOrigin(), t.getDestination(), t.getLegs().size(),
-                    t.getFirstDepartureTime(), t.getFinalArrivalTime(),
-                    t.getTotalTravelTime().toMinutes(),
-                    t.getTotalFirstRate(),
-                    t.getTotalSecondRate());*/
-            System.out.println(t);
+            // If you prefer the formatted single-line output, uncomment and fix as one line:
+            // System.out.printf(Locale.ROOT,
+            //         "%2d) %s → %s | legs=%d | dep=%s | arr=%s | dur=%dm | First=%.2f | Second=%.2f%n",
+            //         i++, t.getOrigin(), t.getDestination(), t.getLegs().size(),
+            //         t.getFirstDepartureTime(), t.getFinalArrivalTime(),
+            //         t.getTotalTravelTime().toMinutes(),
+            //         t.getTotalFirstRate(), t.getTotalSecondRate());
+            System.out.printf("%2d) %s%n", i++, t);
         }
     }
 
@@ -97,7 +91,7 @@ public class Main {
         System.out.println(" 6) First Rate");
         System.out.println(" 7) Second Rate");
         System.out.print("Choose 1-7: ");
-        String s = in.nextLine().trim();
+        String s = IN.nextLine().trim();
         switch (s) {
             case "1": return SortBy.DEPARTURE_TIME;
             case "2": return SortBy.ARRIVAL_TIME;
@@ -114,7 +108,8 @@ public class Main {
 
     private static SortOrder askSortOrder() {
         System.out.print("Order [A]sc / [D]esc (default A): ");
-        String s = in.nextLine().trim().toUpperCase(Locale.ROOT);
+        String s = IN.nextLine().trim().toUpperCase(Locale.ROOT);
         return s.equals("D") ? SortOrder.DESC : SortOrder.ASC;
     }
 }
+
