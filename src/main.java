@@ -41,6 +41,13 @@ public class Main {
 
         SearchCriteria crit = new SearchCriteria(attr, val, LocalDate.now());
 
+        List<Trip> trips = TripFinder.findIndirectIfNoDirect(routes, crit);
+
+        if (trips.isEmpty()) {
+            System.out.println("No trips found for: " + crit);
+            return;
+        }
+
         
 
     }
