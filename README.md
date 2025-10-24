@@ -147,6 +147,7 @@ Trip{id='D:R01614', Malmö?Aarhus, legs=1, dep=15:35, arr=18:00, dur=145min, cha
  - Day of operation
 
 
+
 At this step, the program asks you to filter trips by a specific attribute such as origin, destination, or train type.
 
 You will be prompted to enter:
@@ -155,10 +156,14 @@ The attribute name (for example: from)
 
 The value to search for (for example: Milan)
 
+
+
 So you type:
 
 Attribute: from
+
 Value: Milan
+
 
 
 Example output:
@@ -169,7 +174,10 @@ Results (4):
  3) Trip{id='D:R01705', Milan→Turin, dep=12:45, arr=14:43, First Rate=65.0€, Second Rate=42.0€}
  4) Trip{id='D:R01713', Milan→Zurich, dep=17:05, arr=22:22, First Rate=169.0€, Second Rate=106.0€}
 
+
 Options: Search, Sort, Select, Book, ViewTrips, or Quit
+
+
 
 
 
@@ -186,6 +194,8 @@ Output:
 Selected Trip Details:
 Trip{id='D:R02604', Strasbourg→Paris, dep=11:20, arr=12:50, dur=90min, First Rate=61.0€, Second Rate=39.0€, TrainTypes=[EuroCity], DaysOfOp=[Daily]}
 Trip D:R02604 selected.
+
+
 
 
 Step 4 – Book the Trip
@@ -219,5 +229,22 @@ Trip booked successfully: BookedTrip TRIP-XYZZBM | 2 traveller(s)
 Linked Trip: D:R02604
  - RSV-FNU8 | ali hadi (ID: hfr738) | Ticket #10000
  - RSV-PCOT | ryan preet (ID: jiuf745) | Ticket #10001
+
+
+
+
+Step 5 – View Booked Trips
+
+To see your past or current trips, type ViewTrips:
+
+> ViewTrips
+Enter last name: hadi
+Enter ID: hfr738
+
+
+Output:
+
+Trips for hadi:
+BookedTrip TRIP-XYZZBM | 2 traveller(s) | Linked Trip: D:R02604 (Strasbourg => Paris)
 
 
