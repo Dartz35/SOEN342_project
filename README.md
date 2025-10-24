@@ -128,3 +128,96 @@ Trip{id='D:R01614', Malmö?Aarhus, legs=1, dep=15:35, arr=18:00, dur=145min, cha
 | **TripManager** | Acts as the main **controller**, managing trip booking and trip history retrieval. |
 
 ---
+
+## How to Run
+
+1. Compile and run:
+
+   java Main
+
+2. Input one of the following attribute:
+ - from       
+ - to         
+ - departure  
+ - arrival    
+ - duration   
+ - First Rate      
+ - Second Rate      
+ - Train type
+ - Day of operation
+
+
+At this step, the program asks you to filter trips by a specific attribute such as origin, destination, or train type.
+
+You will be prompted to enter:
+
+The attribute name (for example: from)
+
+The value to search for (for example: Milan)
+
+So you type:
+
+Attribute: from
+Value: Milan
+
+
+Example output:
+
+Results (4):
+ 1) Trip{id='D:R01694', Milan→Bergamo, dep=09:25, arr=11:32, First Rate=53.0€, Second Rate=38.0€}
+ 2) Trip{id='D:R01703', Milan→Rome, dep=05:45, arr=11:31, First Rate=122.0€, Second Rate=77.0€}
+ 3) Trip{id='D:R01705', Milan→Turin, dep=12:45, arr=14:43, First Rate=65.0€, Second Rate=42.0€}
+ 4) Trip{id='D:R01713', Milan→Zurich, dep=17:05, arr=22:22, First Rate=169.0€, Second Rate=106.0€}
+
+Options: Search, Sort, Select, Book, ViewTrips, or Quit
+
+
+
+Step 3 – Select a Trip
+
+To choose a trip, type Select and then enter the Trip ID shown in the results.
+
+> Select
+Enter Trip ID (e.g., R02058): R02604
+
+
+Output:
+
+Selected Trip Details:
+Trip{id='D:R02604', Strasbourg→Paris, dep=11:20, arr=12:50, dur=90min, First Rate=61.0€, Second Rate=39.0€, TrainTypes=[EuroCity], DaysOfOp=[Daily]}
+Trip D:R02604 selected.
+
+
+Step 4 – Book the Trip
+
+After selecting a trip, type Book to start booking.
+
+> Book
+Booking Trip: D:R02604 (Strasbourg => Paris)
+How many travellers? 2
+
+
+Then, enter traveler details:
+
+Traveller 1:
+First name: ali
+Last name: hadi
+ID: hfr738
+Age: 34
+
+Traveller 2:
+First name: ryan
+Last name: preet
+ID: jiuf745
+Age: 23
+
+
+Successful booking message:
+
+Trip booked successfully: BookedTrip TRIP-XYZZBM | 2 traveller(s)
+
+Linked Trip: D:R02604
+ - RSV-FNU8 | ali hadi (ID: hfr738) | Ticket #10000
+ - RSV-PCOT | ryan preet (ID: jiuf745) | Ticket #10001
+
+
