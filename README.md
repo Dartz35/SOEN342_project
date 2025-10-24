@@ -84,3 +84,47 @@ Choose 1-7:
 Results:
 Trip{id='D:R01613', Malmö?Aarhus, legs=1, dep=19:35, arr=04:50, dur=555min, changeTime=0min, First Rate=246.0?, Second Rate=134.0?, TrainTypes=[Nightjet], DaysOfOp=[Fri, Mon, Wed]}
 Trip{id='D:R01614', Malmö?Aarhus, legs=1, dep=15:35, arr=18:00, dur=145min, changeTime=0min, First Rate=79.0?, Second Rate=49.0?, TrainTypes=[Frecciarossa], DaysOfOp=[Daily]}
+
+
+
+
+# Iteration 2: Trip Booking & Management System
+
+
+## Features
+
+- **Load Route Data** – Import train routes from CSV files containing origin, destination, time, and fare information.  
+- **Search Trips** – Find **direct** or **indirect** connections based on travel criteria such as origin, destination, and date.  
+- **Trip Computation** – Automatically calculate total duration, connection times, and total costs.  
+- **Sorting Options** – Sort trips by:
+  - Departure or Arrival Time  
+  - Duration  
+  - Origin / Destination City  
+  - First or Second-class Rate  
+  - Day of Operation or Train Type  
+- **Booking System** – Book trips for one or multiple clients; generate tickets and reservations automatically.  
+- **Trip History Management** – Retrieve current or past trips, organized by client.  
+- **Controller Logic** – `TripManager` coordinates booking, viewing, and record-keeping across system components.
+
+---
+
+## Components Overview
+
+| Component | Description |
+|------------|-------------|
+| **Route** | Represents a single train route with origin, destination, timings, and fare details. |
+| **Trip (Abstract)** | Base class representing a journey composed of one or more routes; includes validation and duration logic. |
+| **DirectTrip** | A trip with a single route (no transfers). |
+| **IndirectTrip** | A multi-leg journey involving transfers or connections. |
+| **SearchCriteria** | Holds filters such as origin, destination, date, and sorting attributes. |
+| **TripFinder** | Utility class that finds direct and indirect trips according to the given criteria. |
+| **TripSort** | Utility class that sorts trips using specified `SortBy` and `SortOrder` enums. |
+| **RouteCsvLoader** | Utility class for reading and parsing CSV route files into `Route` objects. |
+| **Client** | Represents a traveler with identifying details like name, ID, and age. |
+| **Ticket** | Represents a unique travel document for a reservation. |
+| **Reservation** | Links a `Client` and their corresponding `Ticket` for a specific trip. |
+| **BookedTrip** | Represents a booked trip containing one or more `Reservation` objects. |
+| **TripHistory** | Stores and retrieves all booked trips; supports filtering by client or date. |
+| **TripManager** | Acts as the main **controller**, managing trip booking and trip history retrieval. |
+
+---
