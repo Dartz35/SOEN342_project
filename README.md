@@ -131,11 +131,15 @@ Trip{id='D:R01614', Malmö?Aarhus, legs=1, dep=15:35, arr=18:00, dur=145min, cha
 
 ## How to Run
 
-1. Compile and run:
+**1 - Compile and run**
 
    java Main
 
-2. Input one of the following attribute:
+**2 - Choose an Attribute to Filter**
+
+Console: 
+
+You can input one of the following attributes:
  - from       
  - to         
  - departure  
@@ -181,7 +185,7 @@ Options: Search, Sort, Select, Book, ViewTrips, or Quit
 
 
 
-Step 3 – Select a Trip
+**Step 3 – Select a Trip**
 
 To choose a trip, type Select and then enter the Trip ID shown in the results.
 
@@ -198,7 +202,7 @@ Trip D:R02604 selected.
 
 
 
-Step 4 – Book the Trip
+**Step 4 – Book the Trip**
 
 After selecting a trip, type Book to start booking.
 
@@ -233,7 +237,8 @@ Linked Trip: D:R02604
 
 
 
-Step 5 – View Booked Trips
+
+**Step 5 – View Booked Trips**
 
 To see your past or current trips, type ViewTrips:
 
