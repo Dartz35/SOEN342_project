@@ -21,10 +21,13 @@ public abstract class Trip {
 
     private List<String> trainTypes;
 
+
+    private static final Random random = new Random();
+
     protected Trip(String id, List<Route> legs) {
         if (id == null || id.isBlank()) throw new IllegalArgumentException("id must not be null/blank");
         if (legs == null || legs.isEmpty()) throw new IllegalArgumentException("legs must not be null/empty");
-        this.id = id;
+        this.id = generateTripId();
         this.legs = Collections.unmodifiableList(new ArrayList<>(legs));
         this.from = this.legs.get(0).getFrom();
         this.to = this.legs.get(legs.size() - 1).getTo();
@@ -59,7 +62,11 @@ public abstract class Trip {
         for (Route r : legs) sum = sum.plus(r.getScheduledDuration());
         return sum;
     }
-
+    private String generateTripId() {
+    // Generate an 8-digit random number between 10000000 and 99999999
+        int id = 10_000 + random.nextInt(90_000); // 10000–99999
+         return String.valueOf(id);
+    }
     public Duration getTotalTransferTime() {
         if (legs.size() <= 1) return Duration.ZERO;
         Duration total = Duration.ZERO;
