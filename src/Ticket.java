@@ -1,13 +1,15 @@
+import java.util.Random;
 
 public class Ticket {
-    private static long counter = 10000; 
-    private long ticketNumber;
+    private static final Random random = new Random();
+    private final int ticketNumber;
 
     public Ticket() {
-        this.ticketNumber = counter++;
+        // Generate a random number between 10000 and 99999 (inclusive)
+        this.ticketNumber = 10_000 + random.nextInt(90_000);
     }
 
-    public long getTicketNumber() {
+    public int getTicketNumber() {
         return ticketNumber;
     }
 
@@ -16,5 +18,6 @@ public class Ticket {
         return "Ticket #" + ticketNumber;
     }
 }
+
 
 
