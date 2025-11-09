@@ -95,7 +95,7 @@ public class Main {
         String val = in.nextLine().trim();
 
         SearchCriteria crit = new SearchCriteria(attr, val, LocalDate.now());
-        return TripFinder.findIndirectIfNoDirect(routes, crit);
+        return TripFinder.findDirect(routes, crit);    
     }
 
     private static void showTrips(List<Trip> trips) {
