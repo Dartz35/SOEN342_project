@@ -1,11 +1,13 @@
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class BookedTrip {
     private String tripId;
     private Trip trip;
     private List<Reservation> reservations;
+    private static final String ALPHANUM = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    private static final SecureRandom random = new SecureRandom();
 
     public BookedTrip(Trip trip, List<Client> clients) {
         this.tripId = generateTripId();
@@ -16,6 +18,9 @@ public class BookedTrip {
         }
     }
 
+    public String getTripID(){
+        return tripId;
+    }
     public Trip getTrip() {
         return trip;
     }
@@ -32,12 +37,11 @@ public class BookedTrip {
         return travellers;
     }
 
+   
     private String generateTripId() {
-        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        Random r = new Random();
-        StringBuilder sb = new StringBuilder("TRIP-");
-        for (int i = 0; i < 6; i++) {
-            sb.append(chars.charAt(r.nextInt(chars.length())));
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 5; i++) {  // 10-character random ID
+            sb.append(ALPHANUM.charAt(random.nextInt(ALPHANUM.length())));
         }
         return sb.toString();
     }
