@@ -8,7 +8,7 @@ public class Reservation {
     private Ticket ticket;
 
     public Reservation(Client client) {
-        this.reservationId = generateReservationId();
+        this.reservationId = getReservationId();
         this.client = client;
         this.ticket = new Ticket();
     }
@@ -19,6 +19,10 @@ public class Reservation {
 
     public Ticket getTicket() {
         return ticket;
+    }
+
+    public String getReservationId() {
+        return generateReservationId();
     }
 
     // To create short alphanumeric ID
@@ -32,9 +36,7 @@ public class Reservation {
         return sb.toString();
     }
 
-    @Override
-    public String toString() {
-        return reservationId + " | " + client + " | " + ticket;
-    }
+    
 }
+
 
