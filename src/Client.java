@@ -23,6 +23,10 @@ public class Client {
         return lastName;
     }
 
+    public int getAge() {
+        return age;
+    }
+
     @Override
     public String toString() {
         return getFullName() + " (ID: " + id + ", Age: " + age + ")";

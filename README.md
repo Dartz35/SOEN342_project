@@ -253,3 +253,31 @@ Trips for hadi:
 BookedTrip TRIP-XYZZBM | 2 traveller(s) | Linked Trip: D:R02604 (Strasbourg => Paris)
 
 
+# Iteration 3: Integrating MySQL Database and LayoverPolicy
+
+
+## New Features
+
+- **Relational Database Integration** – The system now supports persistent storage through MySQL.
+Each entity (Client, Trip, Route, Reservation, Ticket, BookedTrip, TripHistory) maps to a dedicated table with primary and foreign keys ensuring referential integrity.
+- **Layover Policy** – The system now avoids suggesting connections with unreasonable layover durations.
+A policy mechanism defines what is considered an acceptable connection time, allowing longer layovers during the day and shorter ones during late hours.
+This logic is implemented through the LayoverPolicy class and integrated directly into the trip search and validation process.
+- **Unique Trip Identifier** – Every trip is automatically assigned a unique numeric ID (trip_id) to streamline booking, storage, and retrieval processes.
+
+## Updated Components Overview
+
+| Component | Description |
+|------------|-------------|
+| **Database** | Provides persistent relational storage for all key entities. |
+| **LayoverPolicy** | Encapsulates rules for acceptable layover durations depending on time context. |
+| **Trip** | Extended to include a unique trip_id and comply with layover policy constraints. |
+| **BookedTrip / TripHistory** | Persist trips and their historical data directly in the database. |
+| **TripFinder** | Enhanced to apply layover validation when computing indirect trips. |
+
+
+## Demo
+
+https://github.com/user-attachments/assets/11f4f803-d770-423c-a89a-65d9c5e0426e
+
+
