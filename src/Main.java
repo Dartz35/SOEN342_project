@@ -1,15 +1,24 @@
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
 public class Main {
 
     private static final String CSV_PATH = "eu_rail_network.csv";
     private static final Scanner in = new Scanner(System.in);
+    private static final Database db = new Database();
+    private static final LayoverPolicy policy = new LayoverPolicy(1, java.time.LocalTime.of(6, 0),
+            java.time.LocalTime.of(22, 0),
+            java.time.Duration.ofHours(2),
+            java.time.Duration.ofMinutes(30));
 
     public static void main(String[] args) {
         System.out.println("*********Trip Finder & Booking*********");
         System.out.println("CSV path: " + CSV_PATH);
+
+
 
         List<Route> routes;
         try {
@@ -22,13 +31,8 @@ public class Main {
         System.out.println("Loaded " + routes.size() + " routes.");
 
         // initial search
-        List<Trip> trips = performSearch(routes);
-        if (trips.isEmpty()) {
-            System.out.println("No trips found.");
-            return;
-        }
+        List<Trip> trips = null;
 
-        showTrips(trips);
         Trip selectedTrip = null; // holds the currently selected trip
 
         // Main menu
@@ -51,7 +55,7 @@ public class Main {
                     break;
 
                 case "SELECT":
-                    selectedTrip = selectTrip(trips);
+                    selectedTrip = selectTrip(routes);
                     break;
 
                 case "BOOK":
@@ -95,7 +99,7 @@ public class Main {
         String val = in.nextLine().trim();
 
         SearchCriteria crit = new SearchCriteria(attr, val, LocalDate.now());
-        return TripFinder.findDirect(routes, crit);    
+        return TripFinder.findDirect(routes, crit);
     }
 
     private static void showTrips(List<Trip> trips) {
@@ -146,20 +150,120 @@ public class Main {
 
     // ======================= SELECTION =======================
 
-    private static Trip selectTrip(List<Trip> trips) {
-        System.out.print("Enter Trip ID (e.g., R02058): ");
-        String tripId = in.nextLine().trim().toUpperCase(Locale.ROOT);
-        for (Trip t : trips) {
-            if (t.getId().equalsIgnoreCase(tripId) || t.getId().endsWith(tripId)) {
+    private static Trip selectTrip(List<Route> routes) {
+        System.out.print("\nEnter departure city: ");
+        String fromCity = in.nextLine().trim();
+        System.out.print("Enter arrival city: ");
+        String toCity = in.nextLine().trim();
+
+
+        LayoverPolicy lp = new LayoverPolicy(
+                12,                       // 1. policyId (int)
+                LocalTime.of(6, 0),       // 2. Daytime start (LocalTime)
+                LocalTime.of(19, 0),      // 3. Daytime end (LocalTime)
+                Duration.ofHours(4),      // 4. Max Daytime Layover (Duration)
+                Duration.ofHours(2)       // 5. Max Night Layover (Duration)
+        );
+
+        // Step 1: Find all possible trips (direct or indirect)
+        List<Trip> foundTrips = TripFinder.findIndirectFromTo(routes, fromCity, toCity,lp);
+
+
+        if (foundTrips.isEmpty()) {
+            System.out.println("\n No direct or indirect trips found from " +
+                    fromCity + " to " + toCity + ".");
+            return null;
+        }
+
+        // Step 2: Separate direct and indirect trips for clarity
+        List<Trip> directTrips = new ArrayList<>();
+        List<Trip> indirectTrips = new ArrayList<>();
+
+        for (Trip t : foundTrips) {
+            if (t instanceof IndirectTrip) indirectTrips.add(t);
+            else directTrips.add(t);
+        }
+
+        // Step 3: Display results nicely
+        System.out.println("\n Trips found from " + fromCity + " to " + toCity + ":");
+
+        if (!directTrips.isEmpty()) {
+            System.out.println("\n--- Direct Trips ---");
+            System.out.println();
+            int i = 1;
+            for (Trip t : directTrips) {
+                System.out.printf("%2d) %s -> %s | %d legs | Trip ID: %s%n",
+                        i++, t.getOrigin(), t.getDestination(), t.getLegs().size(), t.getId());
+                System.out.println("   Route chain:");
+                List<Route> legs = t.getLegs();
+
+                // Use a loop with an index
+
+                Route r = legs.get(0);
+
+                // Print the route details
+                System.out.printf("     %s → %s | RouteID=%s |dep=%s | arr=%s | firstRate=%s%n",
+                        r.getFrom(), r.getTo(), r.getId() ,r.getDepartureTime(), r.getArrivalTime(), r.getFirstRate());
+
+
+                System.out.println();
+            }
+        }
+        if (!indirectTrips.isEmpty()) {
+            System.out.println("\n--- Indirect Trips (connections) ---");
+            System.out.println();
+            int i = 1;
+            System.out.println(lp);
+            System.out.println();
+            for (Trip t : indirectTrips) {
+                System.out.printf("%2d) %s -> %s | %d legs | Trip ID: %s%n",
+                        i++, t.getOrigin(), t.getDestination(), t.getLegs().size(), t.getId());
+                System.out.println("   Route chain:");
+                List<Route> legs = t.getLegs();
+
+                // Use a loop with an index
+                for (int i2 = 0; i2 < legs.size(); i2++) {
+                    Route r = legs.get(i2);
+
+                    // Print the route details
+                    System.out.printf("     %s → %s | RouteID=%s |dep=%s | arr=%s | firstRate=%s%n",
+                            r.getFrom(), r.getTo(), r.getId() ,r.getDepartureTime(), r.getArrivalTime(), r.getFirstRate());
+
+                    // Only print "Change Connection" if it is NOT the last leg
+                    if (i2 < legs.size() - 1) {
+                        System.out.println("            -- Change Connection --");
+                    }
+                }
+                System.out.println();
+            }
+        }
+
+        // Step 4: Let user select a trip
+        System.out.print("Enter Trip ID to select: ");
+        String id = in.nextLine().trim().toUpperCase(Locale.ROOT);
+
+        for (Trip t : foundTrips) {
+            if (t.getId().equalsIgnoreCase(id) || t.getId().endsWith(id)) {
                 System.out.println("\nSelected Trip Details:");
-                System.out.println(t);
-                System.out.println(" Trip " + t.getId() + " selected.");
+                System.out.println("---------------------------------");
+                System.out.println("Trip ID: " + t.getId());
+                System.out.println("From: " + t.getOrigin());
+                System.out.println("To: " + t.getDestination());
+                System.out.println("Legs: " + t.getLegs().size());
+                for (Route r : t.getLegs()) {
+                    System.out.printf("  %s → %s | dep=%s | arr=%s%n",
+                            r.getFrom(), r.getTo(), r.getDepartureTime(), r.getArrivalTime());
+                }
+                System.out.println("---------------------------------");
                 return t;
             }
         }
-        System.out.println("No trip found with ID: " + tripId);
+
+        System.out.println("No trip found with ID: " + id);
         return null;
     }
+
+
 
     // ======================= BOOKING =======================
 
@@ -183,16 +287,36 @@ public class Main {
             int age = Integer.parseInt(in.nextLine().trim());
             clients.add(new Client(first, last, id, age));
         }
-
         BookedTrip booked = TripManager.bookTrip(clients, selectedTrip);
-        if (booked != null) {
-            System.out.println("\n Trip booked successfully and linked to selected trip!");
-            System.out.println("Linked Trip: " + selectedTrip.getId());
-            for (Reservation r : booked.getReservations())
-                System.out.println(" - " + r);
+        db.connect();
+        db.saveTrip(selectedTrip);
+        for (Client c : clients) {
+            db.saveClient(c);
+            String randomSuffix = UUID.randomUUID().toString().substring(0, 5).toUpperCase();
+            db.saveBookedTrip(booked,c,randomSuffix);
         }
+
+
+
+
+
+
+        System.out.println("\nTrip booked successfully and saved to database!");
+
+        for (Reservation r : booked.getReservations()) {
+            // 1. Save the ticket (parent)
+            db.saveTicket(r.getTicket());
+
+            // 2. Save the reservation (parent)
+            db.saveReservation(r);
+
+        }
+
+        db.close();
+
         return selectedTrip;
     }
+
 
     private static void viewTripsMenu() {
         System.out.print("Enter last name: ");
@@ -201,16 +325,13 @@ public class Main {
         String id = in.nextLine().trim();
 
         List<BookedTrip> found = TripManager.viewTrips(last, id);
-        if (found.isEmpty()) {
-            System.out.println("No trips found for " + last + " (" + id + ")");
-            return;
-        }
 
-        System.out.println("\nTrips for " + last + ":");
-        for (BookedTrip bt : found) {
-            System.out.print(bt);
-            System.out.println(" | Linked Trip: " + bt.getTrip().getId() + " (" +
-                    bt.getTrip().getOrigin() + " => " + bt.getTrip().getDestination() + ")");
-        }
+
+
+
+        db.connect();
+        System.out.println("\n" + last + " Trip History: ");
+        db.readAllBookings(id);
+        db.close();
     }
 }
